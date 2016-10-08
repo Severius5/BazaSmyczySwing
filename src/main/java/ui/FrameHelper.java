@@ -18,7 +18,8 @@ public class FrameHelper {
     private JTextField textField;
     private JTextField sizeField;
     private JTextField colorField;
-    private java.util.List<JTextField> list = new ArrayList<>();
+    private JTextField descField;
+    private java.util.List<JTextField> fieldsList = new ArrayList<>();
     private DBManager dbManager = new DBManager();
 
 
@@ -46,6 +47,10 @@ public class FrameHelper {
         return colorField;
     }
 
+    public JTextField getDescField() {
+        return descField;
+    }
+
     public FrameHelper(JFrame frame) {
         this.frame = frame;
     }
@@ -62,12 +67,13 @@ public class FrameHelper {
         addTextField(panel);
         addSizeField(panel);
         addColorField(panel);
+        addDescField(panel);
     }
 
     public void addCancelBtn(JPanel panel) {
         GridBagConstraints constraints;
         constraints = new GridBagConstraints();
-        constraints.gridy = 4;
+        constraints.gridy = 5;
         constraints.gridx = 1;
         constraints.anchor = GridBagConstraints.CENTER;
         cancelBtn = new JButton("Anuluj");
@@ -77,7 +83,7 @@ public class FrameHelper {
     public void addOKBtn(JPanel panel, String title) {
         GridBagConstraints constraints;
         constraints = new GridBagConstraints();
-        constraints.gridy = 4;
+        constraints.gridy = 5;
         constraints.anchor = GridBagConstraints.CENTER;
         okBtn = new JButton(title);
         okBtn.setEnabled(false);
@@ -91,13 +97,44 @@ public class FrameHelper {
         colorField.getDocument().addDocumentListener(new FieldListener());
     }
 
-    public boolean isImageNameExists(Leash leash) {
+    public boolean isLeashInvalid(Leash leash) {
         if (dbManager.isImageNameExists(leash)) {
-            JOptionPane.showMessageDialog(null, "Podana nazwa obrazu juz istnieje",
-                    "Warning", JOptionPane.WARNING_MESSAGE);
+            if (dbManager.isLeashExists(leash)) {
+                JOptionPane.showMessageDialog(null, "Smycz istnieje w bazie",
+                        "Warning", JOptionPane.WARNING_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(null, "Podana nazwa obrazu juz istnieje",
+                        "Warning", JOptionPane.WARNING_MESSAGE);
+            }
             return true;
         }
         return false;
+    }
+
+    public Leash newLeashWithFields(final Long ID) {
+
+        final String imageName = getImageNameField().getText();
+        final String text = getTextField().getText();
+        final String size = getSizeField().getText();
+        final String color = getColorField().getText();
+        final String desc = getDescField().getText();
+
+        return new Leash(ID, imageName, text, size, color, desc);
+    }
+
+    public Leash newLeashWithFields() {
+
+        final String imageName = getImageNameField().getText();
+        final String text = getTextField().getText();
+        final String size = getSizeField().getText();
+        final String color = getColorField().getText();
+        final String desc = getDescField().getText();
+
+        return new Leash(imageName, text, size, color, desc);
+    }
+
+    public Object[] newObjectWithFields(final Long ID, final Leash leash){
+        return new Object[]{ID, leash.getImageName(), leash.getText(), leash.getSize(), leash.getColor(), leash.getDesc()};
     }
 
     private void addColorField(JPanel panel) {
@@ -117,7 +154,7 @@ public class FrameHelper {
         colorField = new JTextField();
 
         panel.add(colorField, constraints);
-        list.add(colorField);
+        fieldsList.add(colorField);
     }
 
     private void addSizeField(JPanel panel) {
@@ -137,7 +174,7 @@ public class FrameHelper {
         sizeField = new JTextField();
 
         panel.add(sizeField, constraints);
-        list.add(sizeField);
+        fieldsList.add(sizeField);
     }
 
     private void addTextField(JPanel panel) {
@@ -157,7 +194,7 @@ public class FrameHelper {
         textField = new JTextField();
 
         panel.add(textField, constraints);
-        list.add(textField);
+        fieldsList.add(textField);
     }
 
     private void addImageNameField(JPanel panel) {
@@ -175,13 +212,30 @@ public class FrameHelper {
         imageNameField = new JTextField();
 
         panel.add(imageNameField, constraints);
-        list.add(imageNameField);
+        fieldsList.add(imageNameField);
     }
 
+    private void addDescField(JPanel panel) {
+        GridBagConstraints constraints = new GridBagConstraints();
+        constraints.insets = new Insets(2, 2, 2, 2);
+        constraints.anchor = GridBagConstraints.WEST;
+        constraints.gridy = 4;
+        panel.add(new JLabel("Description:"), constraints);
+
+        constraints = new GridBagConstraints();
+        constraints.insets = new Insets(2, 2, 2, 2);
+        constraints.fill = GridBagConstraints.BOTH;
+        constraints.gridx = 1;
+        constraints.gridy = 4;
+        constraints.weightx = 1;
+        descField = new JTextField();
+
+        panel.add(descField, constraints);
+    }
 
     private boolean checkForEmptyFields() {
         boolean result = true;
-        for (JTextField field : list) {
+        for (JTextField field : fieldsList) {
             if (field.getText().trim().length() == 0) {
                 field.setBackground(Color.RED);
                 result = false;

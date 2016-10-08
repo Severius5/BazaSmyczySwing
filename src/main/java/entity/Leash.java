@@ -17,23 +17,34 @@ public class Leash implements Serializable {
     private String text;
     private String size;
     private String color;
+    private String desc;
 
     public Leash() {
     }
 
-    public Leash(String imageName, String text, String size, String color) {
+    public Leash(String imageName, String text, String size, String color, String desc) {
         this.imageName = imageName;
         this.text = text;
         this.size = size;
         this.color = color;
+        this.desc = desc;
     }
 
-    public Leash(Long ID, String imageName, String text, String size, String color) {
+    public Leash(Long ID, String imageName, String text, String size, String color, String desc) {
         this.ID = ID;
         this.imageName = imageName;
         this.text = text;
         this.size = size;
         this.color = color;
+        this.desc = desc;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
     }
 
     public Long getID() {
@@ -72,8 +83,4 @@ public class Leash implements Serializable {
         this.color = color;
     }
 
-    @Override
-    public String toString() {
-        return String.format("%-5s|%-15s|%-30s|%-8s|%s", ID + ".", imageName, text, size, color);
-    }
 }

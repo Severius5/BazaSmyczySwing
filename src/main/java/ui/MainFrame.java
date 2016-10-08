@@ -20,7 +20,7 @@ public class MainFrame extends JFrame {
     private Action refreshAction;
     private Action searchAction;
 
-    private String[] columnNames = {"ID", "Image Name", "Text", "Size", "Color"};
+    private String[] columnNames = {"ID", "Image Name", "Text", "Size", "Color", "Desc"};
 
     public MainFrame() {
         initActions();
@@ -30,6 +30,7 @@ public class MainFrame extends JFrame {
     private void initComponents() {
         add(createTable(), BorderLayout.CENTER);
         add(createToolbar(), BorderLayout.PAGE_START);
+        add(createCounter(), BorderLayout.PAGE_END);
     }
 
     private void initActions() {
@@ -89,8 +90,15 @@ public class MainFrame extends JFrame {
         return toolBar;
     }
 
+    private JComponent createCounter() {
+        JTextField field = new JTextField();
+        field.setEditable(false);
+        tableModel.addTableModelListener(e -> field.setText(String.valueOf(tableModel.getRowCount())));
+        return field;
+    }
+
     private void refreshData() {
-       new TableModelHelper(tableModel).updateTable(dbManager.getLeashes());
+        new TableModelHelper(tableModel).updateTable(dbManager.getLeashes());
     }
 
     private void deleteLeash() {
@@ -114,7 +122,7 @@ public class MainFrame extends JFrame {
         new AddFrame(tableModel);
     }
 
-    private void searchLeash(){
+    private void searchLeash() {
         new SearchFrame(tableModel);
     }
 }

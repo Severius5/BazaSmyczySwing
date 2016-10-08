@@ -43,8 +43,7 @@ public class SearchFrame extends JFrame {
             Object source = e.getSource();
 
             if (source == frameHelper.getOkBtn()) {
-                Leash leash = new Leash(frameHelper.getImageNameField().getText(), frameHelper.getTextField().getText(),
-                        frameHelper.getSizeField().getText(), frameHelper.getColorField().getText());
+                Leash leash = frameHelper.newLeashWithFields();
 
                 new TableModelHelper(tableModel).updateTable(dbManager.search(leash));
 

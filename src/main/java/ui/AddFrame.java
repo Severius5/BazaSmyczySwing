@@ -43,15 +43,13 @@ public class AddFrame extends JFrame {
             Object source = e.getSource();
 
             if (source == frameHelper.getOkBtn()) {
+                Leash leash = frameHelper.newLeashWithFields();
 
-                Leash leash = new Leash(frameHelper.getImageNameField().getText(), frameHelper.getTextField().getText(),
-                        frameHelper.getSizeField().getText(), frameHelper.getColorField().getText());
-
-                if (frameHelper.isImageNameExists(leash))
+                if (frameHelper.isLeashInvalid(leash))
                     return;
 
                 Long ID = dbManager.add(leash);
-                Object[] newRow = {ID, leash.getImageName(), leash.getText(), leash.getSize(), leash.getColor()};
+                Object[] newRow = {ID, leash.getImageName(), leash.getText(), leash.getSize(), leash.getColor(), leash.getDesc()};
                 tableModel.addRow(newRow);
                 setVisible(false);
 

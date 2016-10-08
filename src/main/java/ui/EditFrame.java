@@ -60,11 +60,10 @@ public class EditFrame extends JFrame {
 
             if (source == frameHelper.getOkBtn()) {
                 final Long ID = getID();
-                final Leash leash = new Leash(ID, frameHelper.getImageNameField().getText(), frameHelper.getTextField().getText(),
-                        frameHelper.getSizeField().getText(), frameHelper.getColorField().getText());
-                final Object[] newRow = {ID, leash.getImageName(), leash.getText(), leash.getSize(), leash.getColor()};
+                final Leash leash = frameHelper.newLeashWithFields(ID);
+                final Object[] newRow = frameHelper.newObjectWithFields(ID, leash);
 
-                if (frameHelper.isImageNameExists(leash))
+                if (frameHelper.isLeashInvalid(leash))
                     return;
 
                 new DBManager().edit(leash);

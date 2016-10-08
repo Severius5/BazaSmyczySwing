@@ -45,6 +45,7 @@ public class DBManager {
             leashFromDB.setText(leash.getText());
             leashFromDB.setSize(leash.getSize());
             leashFromDB.setColor(leash.getColor());
+            leashFromDB.setDesc(leash.getDesc());
 
             session.update(leashFromDB);
 
@@ -108,6 +109,8 @@ public class DBManager {
                 cr.add(Restrictions.ilike("size", leash.getSize(), MatchMode.ANYWHERE));
             if (!leash.getColor().isEmpty())
                 cr.add(Restrictions.ilike("color", leash.getColor(), MatchMode.ANYWHERE));
+            if(!leash.getDesc().isEmpty())
+                cr.add(Restrictions.ilike("desc", leash.getDesc(), MatchMode.ANYWHERE));
 
             cr.addOrder(Order.asc("ID"));
 
@@ -130,6 +133,31 @@ public class DBManager {
 
             Query query = session.createQuery("FROM Leash WHERE imageName = :imageName");
             query.setParameter("imageName", leash.getImageName());
+            List<Leash> dbResults = query.list();
+
+            transaction.commit();
+            return !dbResults.isEmpty();
+        } catch (HibernateException e) {
+            if (transaction != null)
+                transaction.rollback();
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean isLeashExists(final Leash leash) {
+        Transaction transaction = null;
+        try (Session session = Factory.getSessionFactory().getCurrentSession()) {
+            transaction = session.beginTransaction();
+
+            final String dbQuery = "FROM Leash WHERE imageName=:imageName and text=:text and "
+                    +"size=:size and color=:color";
+
+            Query query = session.createQuery(dbQuery);
+            query.setParameter("imageName", leash.getImageName());
+            query.setParameter("text", leash.getText());
+            query.setParameter("size", leash.getSize());
+            query.setParameter("color", leash.getColor());
             List<Leash> dbResults = query.list();
 
             transaction.commit();
