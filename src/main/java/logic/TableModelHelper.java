@@ -1,6 +1,7 @@
 package logic;
 
 import entity.Leash;
+import utils.Column;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -26,12 +27,12 @@ public class TableModelHelper {
             protected void process(List<Leash> leashes) {
                 for (Leash leash : leashes) {
                     Object[] leashObject = new Object[6];
-                    leashObject[0] = leash.getID();
-                    leashObject[1] = leash.getImageName();
-                    leashObject[2] = leash.getText();
-                    leashObject[3] = leash.getSize();
-                    leashObject[4] = leash.getColor();
-                    leashObject[5] = leash.getDesc();
+                    leashObject[Column.ID] = leash.getID();
+                    leashObject[Column.imageName] = leash.getImageName();
+                    leashObject[Column.text] = leash.getText();
+                    leashObject[Column.size] = leash.getSize();
+                    leashObject[Column.color] = leash.getColor();
+                    leashObject[Column.desc] = leash.getDesc();
                     tableModel.addRow(leashObject);
                 }
             }

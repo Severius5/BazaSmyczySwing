@@ -99,8 +99,6 @@ public class DBManager {
 
             Criteria cr = session.createCriteria(Leash.class);
 
-//            if (!isNull(leash.getID()))
-//                cr.add(Restrictions.eq("ID", leash.getID()));
             if (!leash.getImageName().isEmpty())
                 cr.add(Restrictions.ilike("imageName", leash.getImageName(), MatchMode.ANYWHERE));
             if (!leash.getText().isEmpty())

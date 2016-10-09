@@ -2,12 +2,15 @@ package ui;
 
 import entity.Leash;
 import logic.DBManager;
+import logic.FileManager;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 
 public class AddFrame extends JFrame {
 
@@ -45,11 +48,11 @@ public class AddFrame extends JFrame {
             if (source == frameHelper.getOkBtn()) {
                 Leash leash = frameHelper.newLeashWithFields();
 
-                if (frameHelper.isLeashInvalid(leash))
+                if (frameHelper.isLeashInvalid(leash) || !isSuccessCopy())
                     return;
 
                 Long ID = dbManager.add(leash);
-                Object[] newRow = {ID, leash.getImageName(), leash.getText(), leash.getSize(), leash.getColor(), leash.getDesc()};
+                Object[] newRow = frameHelper.newObjectWithFields(ID, leash);
                 tableModel.addRow(newRow);
                 setVisible(false);
 
@@ -58,6 +61,24 @@ public class AddFrame extends JFrame {
             }
         }
 
+        private boolean isSuccessCopy() {
+            File file = frameHelper.getFile();
+            if (file != null) {
+                String imageName = frameHelper.getImageNameField().getText();
+                try {
+                    new FileManager().copyImage(file, imageName);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    JOptionPane.showMessageDialog(null, "Nie mozna skopiowac pliku",
+                            "Error", JOptionPane.ERROR_MESSAGE);
+                }
+                return true;
+            } else {
+                JOptionPane.showMessageDialog(null, "Prosze podac plik (dwuklik na image name)",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+                return false;
+            }
+        }
 
     }
 

@@ -51,6 +51,10 @@ public class Leash implements Serializable {
         return ID;
     }
 
+    public void setID(Long ID) {
+        this.ID = ID;
+    }
+
     public String getImageName() {
         return imageName;
     }

@@ -1,13 +1,17 @@
 package ui;
 
 import logic.DBManager;
+import logic.FileManager;
 import logic.TableModel;
 import logic.TableModelHelper;
+import utils.Column;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class MainFrame extends JFrame {
 
@@ -23,8 +27,15 @@ public class MainFrame extends JFrame {
     private String[] columnNames = {"ID", "Image Name", "Text", "Size", "Color", "Desc"};
 
     public MainFrame() {
+        setTitle("Baza smyczy");
+        setSize(800, 600);
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(MainFrame.EXIT_ON_CLOSE);
+        setVisible(true);
+
         initActions();
         initComponents();
+        initMouseListener();
     }
 
     private void initComponents() {
@@ -70,11 +81,26 @@ public class MainFrame extends JFrame {
         };
     }
 
+    private void initMouseListener() {
+        table.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                    if (table.getSelectedColumn() == 1) {
+                        int row = table.getSelectedRow();
+                        String imageName = (String) tableModel.getValueAt(row, Column.imageName);
+                        new ImageFrame(imageName);
+                    }
+                }
+            }
+        });
+    }
+
     private JComponent createTable() {
         tableModel = new TableModel();
         tableModel.setColumnIdentifiers(columnNames);
         table = new JTable(tableModel);
-        table.getColumnModel().getColumn(0).setPreferredWidth(10);
+        table.getColumnModel().getColumn(Column.ID).setPreferredWidth(10);
         return new JScrollPane(table);
     }
 
@@ -106,7 +132,9 @@ public class MainFrame extends JFrame {
         if (row == -1)
             return;
         if (JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(this, "Delete?", "Delete", JOptionPane.YES_NO_OPTION)) {
-            Long ID = (Long) tableModel.getValueAt(row, 0);
+            Long ID = (Long) tableModel.getValueAt(row, Column.ID);
+            String imageName = (String) tableModel.getValueAt(row, Column.imageName);
+            new FileManager().deleteImage(imageName);
             tableModel.removeRow(row);
             dbManager.delete(ID);
         }
@@ -125,4 +153,5 @@ public class MainFrame extends JFrame {
     private void searchLeash() {
         new SearchFrame(tableModel);
     }
+
 }

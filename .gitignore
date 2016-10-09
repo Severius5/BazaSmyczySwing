@@ -84,3 +84,4 @@ hs_err_pid*
 
 # Another
 META-INF/
+.idea/artifacts/

@@ -2,12 +2,17 @@ package ui;
 
 import entity.Leash;
 import logic.DBManager;
+import logic.FileManager;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 public class FrameHelper {
 
@@ -19,9 +24,14 @@ public class FrameHelper {
     private JTextField sizeField;
     private JTextField colorField;
     private JTextField descField;
-    private java.util.List<JTextField> fieldsList = new ArrayList<>();
+    private File file;
+    private List<JTextField> fieldsList = new ArrayList<>();
     private DBManager dbManager = new DBManager();
 
+
+    public File getFile() {
+        return file;
+    }
 
     public JButton getOkBtn() {
         return okBtn;
@@ -93,6 +103,7 @@ public class FrameHelper {
     public void addFieldsListener() {
         textField.getDocument().addDocumentListener(new FieldListener());
         imageNameField.getDocument().addDocumentListener(new FieldListener());
+        imageNameField.addMouseListener(new MouseListener());
         sizeField.getDocument().addDocumentListener(new FieldListener());
         colorField.getDocument().addDocumentListener(new FieldListener());
     }
@@ -113,13 +124,10 @@ public class FrameHelper {
 
     public Leash newLeashWithFields(final Long ID) {
 
-        final String imageName = getImageNameField().getText();
-        final String text = getTextField().getText();
-        final String size = getSizeField().getText();
-        final String color = getColorField().getText();
-        final String desc = getDescField().getText();
+        Leash leash = newLeashWithFields();
+        leash.setID(ID);
 
-        return new Leash(ID, imageName, text, size, color, desc);
+        return leash;
     }
 
     public Leash newLeashWithFields() {
@@ -133,7 +141,7 @@ public class FrameHelper {
         return new Leash(imageName, text, size, color, desc);
     }
 
-    public Object[] newObjectWithFields(final Long ID, final Leash leash){
+    public Object[] newObjectWithFields(final Long ID, final Leash leash) {
         return new Object[]{ID, leash.getImageName(), leash.getText(), leash.getSize(), leash.getColor(), leash.getDesc()};
     }
 
@@ -246,6 +254,16 @@ public class FrameHelper {
         return result;
     }
 
+    private void getImageFromUser() {
+        FileManager fileManager = new FileManager();
+        JFileChooser fileChooser = new JFileChooser();
+        if (fileChooser.showOpenDialog(new JPanel()) == JFileChooser.APPROVE_OPTION) {
+            File file = fileChooser.getSelectedFile();
+            this.file = file;
+            imageNameField.setText(fileManager.getImageName(file));
+        }
+    }
+
     private class FieldListener implements DocumentListener {
         @Override
         public void insertUpdate(DocumentEvent e) {
@@ -260,6 +278,16 @@ public class FrameHelper {
         @Override
         public void changedUpdate(DocumentEvent e) {
             okBtn.setEnabled(checkForEmptyFields());
+        }
+    }
+
+    private class MouseListener extends MouseAdapter {
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+            if (e.getClickCount() == 2) {
+                getImageFromUser();
+            }
         }
     }
 }
