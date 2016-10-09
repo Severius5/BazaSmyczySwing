@@ -3,6 +3,7 @@ package ui;
 import entity.Leash;
 import logic.DBManager;
 import logic.FileManager;
+import utils.Params;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -10,7 +11,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.IOException;
 
 public class AddFrame extends JFrame {
 
@@ -67,15 +67,14 @@ public class AddFrame extends JFrame {
                 String imageName = frameHelper.getImageNameField().getText();
                 try {
                     new FileManager().copyImage(file, imageName);
-                } catch (IOException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
-                    JOptionPane.showMessageDialog(null, "Nie mozna skopiowac pliku",
-                            "Error", JOptionPane.ERROR_MESSAGE);
+                    FrameHelper.showError(null, Params.cantCopy);
+                    return false;
                 }
                 return true;
             } else {
-                JOptionPane.showMessageDialog(null, "Prosze podac plik (dwuklik na image name)",
-                        "Error", JOptionPane.ERROR_MESSAGE);
+                FrameHelper.showWarning(null, Params.selectFile);
                 return false;
             }
         }

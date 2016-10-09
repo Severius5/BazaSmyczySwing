@@ -3,6 +3,7 @@ package ui;
 import entity.Leash;
 import logic.DBManager;
 import logic.FileManager;
+import utils.Params;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -111,11 +112,9 @@ public class FrameHelper {
     public boolean isLeashInvalid(Leash leash) {
         if (dbManager.isImageNameExists(leash)) {
             if (dbManager.isLeashExists(leash)) {
-                JOptionPane.showMessageDialog(null, "Smycz istnieje w bazie",
-                        "Warning", JOptionPane.WARNING_MESSAGE);
+                showWarning(null, Params.leashExists);
             } else {
-                JOptionPane.showMessageDialog(null, "Podana nazwa obrazu juz istnieje",
-                        "Warning", JOptionPane.WARNING_MESSAGE);
+                showWarning(null, Params.leashImageExists);
             }
             return true;
         }
@@ -143,6 +142,14 @@ public class FrameHelper {
 
     public Object[] newObjectWithFields(final Long ID, final Leash leash) {
         return new Object[]{ID, leash.getImageName(), leash.getText(), leash.getSize(), leash.getColor(), leash.getDesc()};
+    }
+
+    public static void showWarning(final JComponent component, final String text) {
+        JOptionPane.showMessageDialog(component, text, "Warning", JOptionPane.WARNING_MESSAGE);
+    }
+
+    public static void showError(final JComponent component, final String text) {
+        JOptionPane.showMessageDialog(component, text, "Error", JOptionPane.ERROR_MESSAGE);
     }
 
     private void addColorField(JPanel panel) {

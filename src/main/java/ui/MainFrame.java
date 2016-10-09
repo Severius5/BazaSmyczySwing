@@ -2,7 +2,7 @@ package ui;
 
 import logic.DBManager;
 import logic.FileManager;
-import logic.TableModel;
+import utils.TableModel;
 import logic.TableModelHelper;
 import utils.Column;
 
@@ -28,7 +28,7 @@ public class MainFrame extends JFrame {
 
     public MainFrame() {
         setTitle("Baza smyczy");
-        setSize(800, 600);
+        setSize(900, 600);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(MainFrame.EXIT_ON_CLOSE);
         setVisible(true);
@@ -100,8 +100,15 @@ public class MainFrame extends JFrame {
         tableModel = new TableModel();
         tableModel.setColumnIdentifiers(columnNames);
         table = new JTable(tableModel);
-        table.getColumnModel().getColumn(Column.ID).setPreferredWidth(10);
+        table = setColumnsWidth(table);
         return new JScrollPane(table);
+    }
+
+    private JTable setColumnsWidth(JTable table) {
+        table.getColumnModel().getColumn(Column.ID).setPreferredWidth(5);
+        table.getColumnModel().getColumn(Column.text).setPreferredWidth(300);
+        table.getColumnModel().getColumn(Column.imageName).setPreferredWidth(30);
+        return table;
     }
 
     private JToolBar createToolbar() {

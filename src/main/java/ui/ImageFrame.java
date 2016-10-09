@@ -1,6 +1,7 @@
 package ui;
 
 import logic.FileManager;
+import utils.Params;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -25,13 +26,12 @@ public class ImageFrame extends JFrame {
 
     private JComponent initImage() {
         try {
-            File file = new File(new FileManager().setPath(imageName));
+            File file = new File(new FileManager().createPath(imageName));
             BufferedImage image = ImageIO.read(file);
             return new JLabel(new ImageIcon(image.getScaledInstance(600, 450, image.SCALE_DEFAULT)));
         } catch (IOException e) {
             e.printStackTrace();
-            JOptionPane.showMessageDialog(null, "Brak podanego zdjecia",
-                    "Error", JOptionPane.ERROR_MESSAGE);
+            FrameHelper.showWarning(null, Params.noPhotoAvailable);
         }
         return null;
     }

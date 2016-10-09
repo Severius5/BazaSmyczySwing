@@ -10,19 +10,19 @@ public class FileManager {
     private final String imageExt = ".jpg";
 
 
-    public String setPath(final String imageName) {
+    public String createPath(final String imageName) {
         String directory = getMainDirectory() + File.separator;
         return directory + imagesFolder + File.separator + imageName + imageExt;
     }
 
     public void copyImage(final File source, final String imageName) throws IOException {
-        File target = new File(setPath(imageName));
+        File target = new File(createPath(imageName));
         createImageDirectory();
         Files.copy(source.toPath(), target.toPath());
     }
 
     public void renameImageFile(final String oldName, final String newName) throws IOException {
-        File source = new File(setPath(oldName));
+        File source = new File(createPath(oldName));
         Files.move(source.toPath(), source.toPath().resolveSibling(newName + imageExt));
     }
 
@@ -32,7 +32,7 @@ public class FileManager {
     }
 
     public void deleteImage(final String imageName) {
-        File imageToDelete = new File(setPath(imageName));
+        File imageToDelete = new File(createPath(imageName));
         imageToDelete.delete();
     }
 

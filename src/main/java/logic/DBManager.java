@@ -148,11 +148,10 @@ public class DBManager {
         try (Session session = Factory.getSessionFactory().getCurrentSession()) {
             transaction = session.beginTransaction();
 
-            final String dbQuery = "FROM Leash WHERE imageName=:imageName and text=:text and "
+            final String dbQuery = "FROM Leash WHERE text=:text and "
                     +"size=:size and color=:color";
 
             Query query = session.createQuery(dbQuery);
-            query.setParameter("imageName", leash.getImageName());
             query.setParameter("text", leash.getText());
             query.setParameter("size", leash.getSize());
             query.setParameter("color", leash.getColor());

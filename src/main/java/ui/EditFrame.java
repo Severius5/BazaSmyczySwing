@@ -4,6 +4,7 @@ import entity.Leash;
 import logic.DBManager;
 import logic.FileManager;
 import utils.Column;
+import utils.Params;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -72,17 +73,21 @@ public class EditFrame extends JFrame {
                 newImageName = frameHelper.getImageNameField().getText();
                 final Leash leash = frameHelper.newLeashWithFields(ID);
                 final Object[] newRow = frameHelper.newObjectWithFields(ID, leash);
+                DBManager dbManager = new DBManager();
 
-                if (frameHelper.isLeashInvalid(leash))
+                if (dbManager.isLeashExists(leash)) {
+                    FrameHelper.showWarning(null, Params.leashExists);
                     return;
-
+                }
                 if (isImageNameChanged()) {
+                    if (dbManager.isImageNameExists(leash)) {
+                        FrameHelper.showWarning(null, Params.leashImageExists);
+                        return;
+                    }
                     try {
                         new FileManager().renameImageFile(oldImageName, newImageName);
                     } catch (IOException e1) {
-                        e1.printStackTrace();
-                        JOptionPane.showMessageDialog(null, "Nie mozna zmienic nazwy.",
-                                "Error", JOptionPane.ERROR_MESSAGE);
+                        FrameHelper.showError(null, Params.cantRename);
                         return;
                     }
                 }
