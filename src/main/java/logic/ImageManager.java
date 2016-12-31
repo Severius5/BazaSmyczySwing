@@ -11,41 +11,49 @@ public class ImageManager
     private final String imageExt = ".jpg";
 
 
-    public String createPath(final String imageName) {
+    public String createPath(final String imageName)
+    {
         String directory = getMainDirectory() + File.separator;
         return directory + imagesFolder + File.separator + imageName + imageExt;
     }
 
-    public void copyImage(final File source, final String imageName) throws IOException {
+    public void copyImage(final File source, final String imageName) throws IOException
+    {
         File target = new File(createPath(imageName));
         createImageDirectory();
         Files.copy(source.toPath(), target.toPath());
     }
 
-    public void renameImageFile(final String oldName, final String newName) throws IOException {
+    public void renameImageFile(final String oldName, final String newName) throws IOException
+    {
         File source = new File(createPath(oldName));
         Files.move(source.toPath(), source.toPath().resolveSibling(newName + imageExt));
     }
 
-    public String getImageName(final File imagePath) {
+    public String getImageName(final File imagePath)
+    {
         String path = imagePath.toString();
         return path.substring(path.lastIndexOf(File.separator) + 1, path.indexOf("."));
     }
 
-    public void deleteImage(final String imageName) {
+    public void deleteImage(final String imageName)
+    {
         File imageToDelete = new File(createPath(imageName));
         imageToDelete.delete();
     }
 
-    private void createImageDirectory() {
+    private void createImageDirectory()
+    {
         String directory = getMainDirectory() + File.separator + imagesFolder;
         File file = new File(directory);
-        if (!file.exists()) {
+        if (!file.exists())
+        {
             file.mkdir();
         }
     }
 
-    private String getMainDirectory() {
+    private String getMainDirectory()
+    {
         String path = this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
         return new File(path).getParent();
     }

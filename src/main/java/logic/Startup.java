@@ -7,13 +7,17 @@ import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-public class Startup {
-    public static void main(String[] args) {
+public class Startup
+{
+    public static void main(String[] args)
+    {
         Factory.getSessionFactory().openSession();
 
-        SwingUtilities.invokeLater(() -> new MainFrame().addWindowListener(new WindowAdapter() {
+        SwingUtilities.invokeLater(() -> new MainFrame().addWindowListener(new WindowAdapter()
+        {
             @Override
-            public void windowClosing(WindowEvent e) {
+            public void windowClosing(WindowEvent e)
+            {
                 Factory.getSessionFactory().close();
             }
         }));

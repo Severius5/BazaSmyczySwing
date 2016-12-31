@@ -11,11 +11,13 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public class ImageFrame extends JFrame {
+public class ImageFrame extends JFrame
+{
 
     private String imageName;
 
-    public ImageFrame(final String imageName) {
+    public ImageFrame(final String imageName)
+    {
         this.imageName = imageName;
         setTitle("Obraz smyczy");
         setLocationRelativeTo(null);
@@ -26,8 +28,10 @@ public class ImageFrame extends JFrame {
         setVisible(true);
     }
 
-    private JComponent initImage() {
-        try {
+    private JComponent initImage()
+    {
+        try
+        {
             File file = new File(new ImageManager().createPath(imageName));
             BufferedImage image = ImageIO.read(file);
 
@@ -35,7 +39,9 @@ public class ImageFrame extends JFrame {
             Dimension scaled = resizer.resizeToFit(this.getSize());
 
             return new JLabel(new ImageIcon(image.getScaledInstance(scaled.width, scaled.height, Image.SCALE_DEFAULT)));
-        } catch (IOException e) {
+        }
+        catch (IOException e)
+        {
             e.printStackTrace();
             FrameHelper.showWarning(null, Consts.noPhotoAvailable);
         }

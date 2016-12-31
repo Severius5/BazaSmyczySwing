@@ -13,19 +13,24 @@ import utils.Factory;
 
 import java.util.List;
 
-public class DBManager {
+public class DBManager
+{
 
-    public Long add(final Leash leash) {
+    public Long add(final Leash leash)
+    {
         Transaction transaction = null;
 
-        try (Session session = Factory.getSessionFactory().getCurrentSession()) {
+        try (Session session = Factory.getSessionFactory().getCurrentSession())
+        {
             transaction = session.beginTransaction();
 
             Long ID = (Long) session.save(leash);
 
             transaction.commit();
             return ID;
-        } catch (HibernateException e) {
+        }
+        catch (HibernateException e)
+        {
             if (transaction != null)
                 transaction.rollback();
             e.printStackTrace();
@@ -33,10 +38,12 @@ public class DBManager {
         return null;
     }
 
-    public void edit(final Leash leash) {
+    public void edit(final Leash leash)
+    {
         Transaction transaction = null;
 
-        try (Session session = Factory.getSessionFactory().getCurrentSession()) {
+        try (Session session = Factory.getSessionFactory().getCurrentSession())
+        {
             transaction = session.beginTransaction();
 
             Leash leashFromDB = session.get(Leash.class, leash.getID());
@@ -50,7 +57,9 @@ public class DBManager {
             session.update(leashFromDB);
 
             transaction.commit();
-        } catch (HibernateException e) {
+        }
+        catch (HibernateException e)
+        {
             if (transaction != null)
                 transaction.rollback();
             e.printStackTrace();
@@ -58,33 +67,41 @@ public class DBManager {
 
     }
 
-    public void delete(final long leashID) {
+    public void delete(final long leashID)
+    {
         Transaction transaction = null;
 
-        try (Session session = Factory.getSessionFactory().getCurrentSession()) {
+        try (Session session = Factory.getSessionFactory().getCurrentSession())
+        {
             transaction = session.beginTransaction();
 
             Leash leash = session.get(Leash.class, leashID);
             session.delete(leash);
 
             transaction.commit();
-        } catch (HibernateException e) {
+        }
+        catch (HibernateException e)
+        {
             if (transaction != null)
                 transaction.rollback();
             e.printStackTrace();
         }
     }
 
-    public List<Leash> getLeashes() {
+    public List<Leash> getLeashes()
+    {
         Transaction transaction = null;
         List<Leash> leashes = null;
-        try (Session session = Factory.getSessionFactory().getCurrentSession()) {
+        try (Session session = Factory.getSessionFactory().getCurrentSession())
+        {
             transaction = session.beginTransaction();
 
             leashes = session.createQuery("FROM Leash").list();
 
             transaction.commit();
-        } catch (HibernateException e) {
+        }
+        catch (HibernateException e)
+        {
             if (transaction != null)
                 transaction.rollback();
             e.printStackTrace();
@@ -92,9 +109,11 @@ public class DBManager {
         return leashes;
     }
 
-    public List<Leash> search(final Leash leash) {
+    public List<Leash> search(final Leash leash)
+    {
         Transaction transaction = null;
-        try (Session session = Factory.getSessionFactory().getCurrentSession()) {
+        try (Session session = Factory.getSessionFactory().getCurrentSession())
+        {
             transaction = session.beginTransaction();
 
             Criteria cr = session.createCriteria(Leash.class);
@@ -107,7 +126,7 @@ public class DBManager {
                 cr.add(Restrictions.ilike("size", leash.getSize(), MatchMode.ANYWHERE));
             if (!leash.getColor().isEmpty())
                 cr.add(Restrictions.ilike("color", leash.getColor(), MatchMode.ANYWHERE));
-            if(!leash.getDesc().isEmpty())
+            if (!leash.getDesc().isEmpty())
                 cr.add(Restrictions.ilike("desc", leash.getDesc(), MatchMode.ANYWHERE));
 
             cr.addOrder(Order.asc("ID"));
@@ -116,7 +135,9 @@ public class DBManager {
 
             transaction.commit();
             return dbResults;
-        } catch (HibernateException e) {
+        }
+        catch (HibernateException e)
+        {
             if (transaction != null)
                 transaction.rollback();
             e.printStackTrace();
@@ -124,9 +145,11 @@ public class DBManager {
         return null;
     }
 
-    public boolean isImageNameExists(final Leash leash) {
+    public boolean isImageNameExists(final Leash leash)
+    {
         Transaction transaction = null;
-        try (Session session = Factory.getSessionFactory().getCurrentSession()) {
+        try (Session session = Factory.getSessionFactory().getCurrentSession())
+        {
             transaction = session.beginTransaction();
 
             Query query = session.createQuery("FROM Leash WHERE imageName = :imageName");
@@ -135,7 +158,9 @@ public class DBManager {
 
             transaction.commit();
             return !dbResults.isEmpty();
-        } catch (HibernateException e) {
+        }
+        catch (HibernateException e)
+        {
             if (transaction != null)
                 transaction.rollback();
             e.printStackTrace();
@@ -145,16 +170,19 @@ public class DBManager {
 
     /**
      * Checks if the leash with specific text, size and color exists in database.
+     *
      * @param leash Leash to check.
      * @return true if leash exists otherwise false.
      */
-    public boolean isLeashExists(final Leash leash) {
+    public boolean isLeashExists(final Leash leash)
+    {
         Transaction transaction = null;
-        try (Session session = Factory.getSessionFactory().getCurrentSession()) {
+        try (Session session = Factory.getSessionFactory().getCurrentSession())
+        {
             transaction = session.beginTransaction();
 
             final String dbQuery = "FROM Leash WHERE ID<>:ID and text=:text and "
-                    +"size=:size and color=:color";
+                    + "size=:size and color=:color";
 
             Query query = session.createQuery(dbQuery);
             query.setParameter("ID", leash.getID());
@@ -165,7 +193,9 @@ public class DBManager {
 
             transaction.commit();
             return !dbResults.isEmpty();
-        } catch (HibernateException e) {
+        }
+        catch (HibernateException e)
+        {
             if (transaction != null)
                 transaction.rollback();
             e.printStackTrace();

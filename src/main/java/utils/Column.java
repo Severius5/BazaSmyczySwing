@@ -1,6 +1,7 @@
 package utils;
 
-public class Column {
+public class Column
+{
     public static final int ID = 0;
     public static final int imageName = 1;
     public static final int text = 2;

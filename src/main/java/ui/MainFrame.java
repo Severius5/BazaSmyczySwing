@@ -13,7 +13,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class MainFrame extends JFrame {
+public class MainFrame extends JFrame
+{
 
     private DBManager dbManager = new DBManager();
     private JTable table;
@@ -26,7 +27,8 @@ public class MainFrame extends JFrame {
 
     private String[] columnNames = {"ID", "Image Name", "Text", "Size", "Color", "Desc"};
 
-    public MainFrame() {
+    public MainFrame()
+    {
         setTitle("Baza smyczy");
         setSize(900, 600);
         setLocationRelativeTo(null);
@@ -38,55 +40,72 @@ public class MainFrame extends JFrame {
         initMouseListener();
     }
 
-    private void initComponents() {
+    private void initComponents()
+    {
         add(createTable(), BorderLayout.CENTER);
         add(createToolbar(), BorderLayout.PAGE_START);
         add(createCounter(), BorderLayout.PAGE_END);
     }
 
-    private void initActions() {
-        refreshAction = new AbstractAction("Refresh") {
+    private void initActions()
+    {
+        refreshAction = new AbstractAction("Refresh")
+        {
             @Override
-            public void actionPerformed(final ActionEvent e) {
+            public void actionPerformed(final ActionEvent e)
+            {
                 refreshData();
             }
         };
 
-        deleteAction = new AbstractAction("Delete") {
+        deleteAction = new AbstractAction("Delete")
+        {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e)
+            {
                 deleteLeash();
             }
         };
 
-        editAction = new AbstractAction("Edit") {
+        editAction = new AbstractAction("Edit")
+        {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e)
+            {
                 editLeash();
             }
         };
 
-        addAction = new AbstractAction("Add") {
+        addAction = new AbstractAction("Add")
+        {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e)
+            {
                 addLeash();
             }
         };
 
-        searchAction = new AbstractAction("Search") {
+        searchAction = new AbstractAction("Search")
+        {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e)
+            {
                 searchLeash();
             }
         };
     }
 
-    private void initMouseListener() {
-        table.addMouseListener(new MouseAdapter() {
+    private void initMouseListener()
+    {
+        table.addMouseListener(new MouseAdapter()
+        {
             @Override
-            public void mousePressed(MouseEvent e) {
-                if (e.getClickCount() == 2) {
-                    if (table.getSelectedColumn() == 1) {
+            public void mousePressed(MouseEvent e)
+            {
+                if (e.getClickCount() == 2)
+                {
+                    if (table.getSelectedColumn() == 1)
+                    {
                         int row = table.getSelectedRow();
                         String imageName = (String) tableModel.getValueAt(row, Column.imageName);
                         new ImageFrame(imageName);
@@ -96,7 +115,8 @@ public class MainFrame extends JFrame {
         });
     }
 
-    private JComponent createTable() {
+    private JComponent createTable()
+    {
         tableModel = new TableModel();
         tableModel.setColumnIdentifiers(columnNames);
         table = new JTable(tableModel);
@@ -104,14 +124,16 @@ public class MainFrame extends JFrame {
         return new JScrollPane(table);
     }
 
-    private JTable setColumnsWidth(JTable table) {
+    private JTable setColumnsWidth(JTable table)
+    {
         table.getColumnModel().getColumn(Column.ID).setPreferredWidth(5);
         table.getColumnModel().getColumn(Column.text).setPreferredWidth(300);
         table.getColumnModel().getColumn(Column.imageName).setPreferredWidth(30);
         return table;
     }
 
-    private JToolBar createToolbar() {
+    private JToolBar createToolbar()
+    {
         final JToolBar toolBar = new JToolBar();
         toolBar.add(refreshAction);
         toolBar.add(addAction);
@@ -123,22 +145,26 @@ public class MainFrame extends JFrame {
         return toolBar;
     }
 
-    private JComponent createCounter() {
+    private JComponent createCounter()
+    {
         JTextField field = new JTextField();
         field.setEditable(false);
         tableModel.addTableModelListener(e -> field.setText(String.valueOf(tableModel.getRowCount())));
         return field;
     }
 
-    private void refreshData() {
+    private void refreshData()
+    {
         new TableModelHelper(tableModel).updateTable(dbManager.getLeashes());
     }
 
-    private void deleteLeash() {
+    private void deleteLeash()
+    {
         final int row = table.getSelectedRow();
         if (row == -1)
             return;
-        if (JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(this, "Delete?", "Delete", JOptionPane.YES_NO_OPTION)) {
+        if (JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(this, "Delete?", "Delete", JOptionPane.YES_NO_OPTION))
+        {
             Long ID = (Long) tableModel.getValueAt(row, Column.ID);
             String imageName = (String) tableModel.getValueAt(row, Column.imageName);
             new ImageManager().deleteImage(imageName);
@@ -147,17 +173,20 @@ public class MainFrame extends JFrame {
         }
     }
 
-    private void editLeash() {
+    private void editLeash()
+    {
         final int row = table.getSelectedRow();
         if (row != -1)
             new EditFrame(tableModel, row);
     }
 
-    private void addLeash() {
+    private void addLeash()
+    {
         new AddFrame(tableModel);
     }
 
-    private void searchLeash() {
+    private void searchLeash()
+    {
         new SearchFrame(tableModel);
     }
 

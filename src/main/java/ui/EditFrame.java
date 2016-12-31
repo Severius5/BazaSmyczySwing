@@ -13,14 +13,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
-public class EditFrame extends JFrame {
+public class EditFrame extends JFrame
+{
 
     private DefaultTableModel tableModel;
     private int row;
     private FrameHelper frameHelper = new FrameHelper(this);
     private String oldImageName;
 
-    public EditFrame(DefaultTableModel tableModel, int row) {
+    public EditFrame(DefaultTableModel tableModel, int row)
+    {
         this.row = row;
         this.tableModel = tableModel;
         setTitle("Edytuj smycz");
@@ -28,7 +30,8 @@ public class EditFrame extends JFrame {
         add(initComponents(), BorderLayout.CENTER);
     }
 
-    private JComponent initComponents() {
+    private JComponent initComponents()
+    {
         JPanel panel = new JPanel(new GridBagLayout());
 
         frameHelper.addFields(panel);
@@ -43,7 +46,8 @@ public class EditFrame extends JFrame {
         return panel;
     }
 
-    private void setTexts() {
+    private void setTexts()
+    {
         frameHelper.getImageNameField().setText(getValue(Column.imageName));
         frameHelper.getTextField().setText(getValue(Column.text));
         frameHelper.getSizeField().setText(getValue(Column.size));
@@ -53,40 +57,51 @@ public class EditFrame extends JFrame {
         oldImageName = frameHelper.getImageNameField().getText();
     }
 
-    private String getValue(int column) {
+    private String getValue(int column)
+    {
         return (String) tableModel.getValueAt(row, column);
     }
 
-    private Long getID() {
+    private Long getID()
+    {
         return (Long) tableModel.getValueAt(row, Column.ID);
     }
 
-    private class ButtonHandler implements ActionListener {
+    private class ButtonHandler implements ActionListener
+    {
         private String newImageName;
 
         @Override
-        public void actionPerformed(ActionEvent e) {
+        public void actionPerformed(ActionEvent e)
+        {
             Object source = e.getSource();
 
-            if (source == frameHelper.getOkBtn()) {
+            if (source == frameHelper.getOkBtn())
+            {
                 final Long ID = getID();
                 newImageName = frameHelper.getImageNameField().getText();
                 final Leash leash = frameHelper.newLeashWithFields(ID);
                 final Object[] newRow = frameHelper.newObjectWithFields(ID, leash);
                 DBManager dbManager = new DBManager();
 
-                if (dbManager.isLeashExists(leash)) {
+                if (dbManager.isLeashExists(leash))
+                {
                     FrameHelper.showWarning(null, Consts.leashExists);
                     return;
                 }
-                if (isImageNameChanged()) {
-                    if (dbManager.isImageNameExists(leash)) {
+                if (isImageNameChanged())
+                {
+                    if (dbManager.isImageNameExists(leash))
+                    {
                         FrameHelper.showWarning(null, Consts.leashImageExists);
                         return;
                     }
-                    try {
+                    try
+                    {
                         new ImageManager().renameImageFile(oldImageName, newImageName);
-                    } catch (IOException e1) {
+                    }
+                    catch (IOException e1)
+                    {
                         FrameHelper.showError(null, Consts.cantRename);
                         return;
                     }
@@ -96,15 +111,16 @@ public class EditFrame extends JFrame {
                 tableModel.removeRow(row);
                 tableModel.insertRow(row, newRow);
                 setVisible(false);
-            } else if (source == frameHelper.getCancelBtn()) {
+            }
+            else if (source == frameHelper.getCancelBtn())
+            {
                 setVisible(false);
             }
         }
 
-        private boolean isImageNameChanged() {
+        private boolean isImageNameChanged()
+        {
             return !oldImageName.equals(newImageName);
         }
     }
-
-
 }

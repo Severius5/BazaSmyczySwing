@@ -15,7 +15,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FrameHelper {
+public class FrameHelper
+{
 
     private JFrame frame;
     private JButton cancelBtn;
@@ -30,50 +31,61 @@ public class FrameHelper {
     private DBManager dbManager = new DBManager();
 
 
-    public File getFile() {
+    public File getFile()
+    {
         return file;
     }
 
-    public JButton getOkBtn() {
+    public JButton getOkBtn()
+    {
         return okBtn;
     }
 
-    public JButton getCancelBtn() {
+    public JButton getCancelBtn()
+    {
         return cancelBtn;
     }
 
-    public JTextField getImageNameField() {
+    public JTextField getImageNameField()
+    {
         return imageNameField;
     }
 
-    public JTextField getTextField() {
+    public JTextField getTextField()
+    {
         return textField;
     }
 
-    public JTextField getSizeField() {
+    public JTextField getSizeField()
+    {
         return sizeField;
     }
 
-    public JTextField getColorField() {
+    public JTextField getColorField()
+    {
         return colorField;
     }
 
-    public JTextField getDescField() {
+    public JTextField getDescField()
+    {
         return descField;
     }
 
-    public FrameHelper(JFrame frame) {
+    public FrameHelper(JFrame frame)
+    {
         this.frame = frame;
     }
 
-    public void setSettings() {
+    public void setSettings()
+    {
         frame.setSize(300, 200);
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(frame.DISPOSE_ON_CLOSE);
         frame.setVisible(true);
     }
 
-    public void addFields(JPanel panel) {
+    public void addFields(JPanel panel)
+    {
         addImageNameField(panel);
         addTextField(panel);
         addSizeField(panel);
@@ -81,7 +93,8 @@ public class FrameHelper {
         addDescField(panel);
     }
 
-    public void addCancelBtn(JPanel panel) {
+    public void addCancelBtn(JPanel panel)
+    {
         GridBagConstraints constraints;
         constraints = new GridBagConstraints();
         constraints.gridy = 5;
@@ -91,7 +104,8 @@ public class FrameHelper {
         panel.add(cancelBtn, constraints);
     }
 
-    public void addOKBtn(JPanel panel, String title) {
+    public void addOKBtn(JPanel panel, String title)
+    {
         GridBagConstraints constraints;
         constraints = new GridBagConstraints();
         constraints.gridy = 5;
@@ -101,7 +115,8 @@ public class FrameHelper {
         panel.add(okBtn, constraints);
     }
 
-    public void addFieldsListener() {
+    public void addFieldsListener()
+    {
         textField.getDocument().addDocumentListener(new FieldListener());
         imageNameField.getDocument().addDocumentListener(new FieldListener());
         imageNameField.addMouseListener(new MouseListener());
@@ -109,11 +124,16 @@ public class FrameHelper {
         colorField.getDocument().addDocumentListener(new FieldListener());
     }
 
-    public boolean isLeashInvalid(Leash leash) {
-        if (dbManager.isImageNameExists(leash)) {
-            if (dbManager.isLeashExists(leash)) {
+    public boolean isLeashInvalid(Leash leash)
+    {
+        if (dbManager.isImageNameExists(leash))
+        {
+            if (dbManager.isLeashExists(leash))
+            {
                 showWarning(null, Consts.leashExists);
-            } else {
+            }
+            else
+            {
                 showWarning(null, Consts.leashImageExists);
             }
             return true;
@@ -121,7 +141,8 @@ public class FrameHelper {
         return false;
     }
 
-    public Leash newLeashWithFields(final Long ID) {
+    public Leash newLeashWithFields(final Long ID)
+    {
 
         Leash leash = newLeashWithFields();
         leash.setID(ID);
@@ -129,7 +150,8 @@ public class FrameHelper {
         return leash;
     }
 
-    public Leash newLeashWithFields() {
+    public Leash newLeashWithFields()
+    {
 
         final String imageName = getImageNameField().getText();
         final String text = getTextField().getText();
@@ -140,19 +162,23 @@ public class FrameHelper {
         return new Leash(imageName, text, size, color, desc);
     }
 
-    public Object[] newObjectWithFields(final Long ID, final Leash leash) {
+    public Object[] newObjectWithFields(final Long ID, final Leash leash)
+    {
         return new Object[]{ID, leash.getImageName(), leash.getText(), leash.getSize(), leash.getColor(), leash.getDesc()};
     }
 
-    public static void showWarning(final JComponent component, final String text) {
+    public static void showWarning(final JComponent component, final String text)
+    {
         JOptionPane.showMessageDialog(component, text, "Warning", JOptionPane.WARNING_MESSAGE);
     }
 
-    public static void showError(final JComponent component, final String text) {
+    public static void showError(final JComponent component, final String text)
+    {
         JOptionPane.showMessageDialog(component, text, "Error", JOptionPane.ERROR_MESSAGE);
     }
 
-    private void addColorField(JPanel panel) {
+    private void addColorField(JPanel panel)
+    {
         GridBagConstraints constraints;
         constraints = new GridBagConstraints();
         constraints.insets = new Insets(2, 2, 2, 2);
@@ -172,7 +198,8 @@ public class FrameHelper {
         fieldsList.add(colorField);
     }
 
-    private void addSizeField(JPanel panel) {
+    private void addSizeField(JPanel panel)
+    {
         GridBagConstraints constraints;
         constraints = new GridBagConstraints();
         constraints.insets = new Insets(2, 2, 2, 2);
@@ -192,7 +219,8 @@ public class FrameHelper {
         fieldsList.add(sizeField);
     }
 
-    private void addTextField(JPanel panel) {
+    private void addTextField(JPanel panel)
+    {
         GridBagConstraints constraints;
         constraints = new GridBagConstraints();
         constraints.insets = new Insets(2, 2, 2, 2);
@@ -212,7 +240,8 @@ public class FrameHelper {
         fieldsList.add(textField);
     }
 
-    private void addImageNameField(JPanel panel) {
+    private void addImageNameField(JPanel panel)
+    {
         GridBagConstraints constraints = new GridBagConstraints();
         constraints.insets = new Insets(2, 2, 2, 2);
         constraints.anchor = GridBagConstraints.WEST;
@@ -230,7 +259,8 @@ public class FrameHelper {
         fieldsList.add(imageNameField);
     }
 
-    private void addDescField(JPanel panel) {
+    private void addDescField(JPanel panel)
+    {
         GridBagConstraints constraints = new GridBagConstraints();
         constraints.insets = new Insets(2, 2, 2, 2);
         constraints.anchor = GridBagConstraints.WEST;
@@ -248,51 +278,65 @@ public class FrameHelper {
         panel.add(descField, constraints);
     }
 
-    private boolean checkForEmptyFields() {
+    private boolean checkForEmptyFields()
+    {
         boolean result = true;
-        for (JTextField field : fieldsList) {
-            if (field.getText().trim().length() == 0) {
+        for (JTextField field : fieldsList)
+        {
+            if (field.getText().trim().length() == 0)
+            {
                 field.setBackground(Color.RED);
                 result = false;
-            } else {
+            }
+            else
+            {
                 field.setBackground(Color.WHITE);
             }
         }
         return result;
     }
 
-    private void getImageFromUser() {
+    private void getImageFromUser()
+    {
         ImageManager imageManager = new ImageManager();
         JFileChooser fileChooser = new JFileChooser();
-        if (fileChooser.showOpenDialog(new JPanel()) == JFileChooser.APPROVE_OPTION) {
+        if (fileChooser.showOpenDialog(new JPanel()) == JFileChooser.APPROVE_OPTION)
+        {
             File file = fileChooser.getSelectedFile();
             this.file = file;
             imageNameField.setText(imageManager.getImageName(file));
         }
     }
 
-    private class FieldListener implements DocumentListener {
+    private class FieldListener implements DocumentListener
+    {
         @Override
-        public void insertUpdate(DocumentEvent e) {
+        public void insertUpdate(DocumentEvent e)
+        {
             okBtn.setEnabled(checkForEmptyFields());
         }
 
         @Override
-        public void removeUpdate(DocumentEvent e) {
+        public void removeUpdate(DocumentEvent e)
+        {
             okBtn.setEnabled(checkForEmptyFields());
         }
 
         @Override
-        public void changedUpdate(DocumentEvent e) {
+        public void changedUpdate(DocumentEvent e)
+        {
             okBtn.setEnabled(checkForEmptyFields());
         }
     }
 
-    private class MouseListener extends MouseAdapter {
+    private class MouseListener extends MouseAdapter
+    {
 
         @Override
-        public void mousePressed(MouseEvent e) {
-            if (e.getClickCount() == 2) {
+        public void mousePressed(MouseEvent e)
+        {
+            if (e.getClickCount() == 2)
+            {
                 getImageFromUser();
             }
         }

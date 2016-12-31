@@ -12,19 +12,22 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 
-public class AddFrame extends JFrame {
+public class AddFrame extends JFrame
+{
 
     private DefaultTableModel tableModel;
     private FrameHelper frameHelper = new FrameHelper(this);
 
-    public AddFrame(DefaultTableModel tableModel) {
+    public AddFrame(DefaultTableModel tableModel)
+    {
         this.tableModel = tableModel;
         setTitle("Dodaj smycz");
         frameHelper.setSettings();
         add(initComponents(), BorderLayout.CENTER);
     }
 
-    private JComponent initComponents() {
+    private JComponent initComponents()
+    {
         JPanel panel = new JPanel(new GridBagLayout());
 
         frameHelper.addFields(panel);
@@ -38,14 +41,17 @@ public class AddFrame extends JFrame {
         return panel;
     }
 
-    private class ButtonHandler implements ActionListener {
+    private class ButtonHandler implements ActionListener
+    {
         DBManager dbManager = new DBManager();
 
         @Override
-        public void actionPerformed(ActionEvent e) {
+        public void actionPerformed(ActionEvent e)
+        {
             Object source = e.getSource();
 
-            if (source == frameHelper.getOkBtn()) {
+            if (source == frameHelper.getOkBtn())
+            {
                 Leash leash = frameHelper.newLeashWithFields();
 
                 if (frameHelper.isLeashInvalid(leash) || !isSuccessCopy())
@@ -56,24 +62,33 @@ public class AddFrame extends JFrame {
                 tableModel.addRow(newRow);
                 setVisible(false);
 
-            } else if (source == frameHelper.getCancelBtn()) {
+            }
+            else if (source == frameHelper.getCancelBtn())
+            {
                 setVisible(false);
             }
         }
 
-        private boolean isSuccessCopy() {
+        private boolean isSuccessCopy()
+        {
             File file = frameHelper.getFile();
-            if (file != null) {
+            if (file != null)
+            {
                 String imageName = frameHelper.getImageNameField().getText();
-                try {
+                try
+                {
                     new ImageManager().copyImage(file, imageName);
-                } catch (Exception e) {
+                }
+                catch (Exception e)
+                {
                     e.printStackTrace();
                     FrameHelper.showError(null, Consts.cantCopy);
                     return false;
                 }
                 return true;
-            } else {
+            }
+            else
+            {
                 FrameHelper.showWarning(null, Consts.selectFile);
                 return false;
             }

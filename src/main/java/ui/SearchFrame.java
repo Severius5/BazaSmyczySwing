@@ -10,20 +10,23 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class SearchFrame extends JFrame {
+public class SearchFrame extends JFrame
+{
 
     private DefaultTableModel tableModel;
     private FrameHelper frameHelper = new FrameHelper(this);
     private DBManager dbManager = new DBManager();
 
-    public SearchFrame(DefaultTableModel tableModel) {
+    public SearchFrame(DefaultTableModel tableModel)
+    {
         this.tableModel = tableModel;
         setTitle("Szukaj smycz");
         frameHelper.setSettings();
         add(initComponents(), BorderLayout.CENTER);
     }
 
-    private JComponent initComponents() {
+    private JComponent initComponents()
+    {
         JPanel panel = new JPanel(new GridBagLayout());
 
         frameHelper.addFields(panel);
@@ -37,18 +40,23 @@ public class SearchFrame extends JFrame {
         return panel;
     }
 
-    private class ButtonHandler implements ActionListener {
+    private class ButtonHandler implements ActionListener
+    {
         @Override
-        public void actionPerformed(ActionEvent e) {
+        public void actionPerformed(ActionEvent e)
+        {
             Object source = e.getSource();
 
-            if (source == frameHelper.getOkBtn()) {
+            if (source == frameHelper.getOkBtn())
+            {
                 Leash leash = frameHelper.newLeashWithFields();
 
                 new TableModelHelper(tableModel).updateTable(dbManager.search(leash));
 
                 setVisible(false);
-            } else if (source == frameHelper.getCancelBtn()) {
+            }
+            else if (source == frameHelper.getCancelBtn())
+            {
                 setVisible(false);
             }
         }
