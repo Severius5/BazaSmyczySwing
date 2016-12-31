@@ -1,7 +1,7 @@
 package ui;
 
+import logic.DimensionResizer;
 import logic.ImageManager;
-import logic.ImageResizer;
 import utils.Consts;
 
 import javax.imageio.ImageIO;
@@ -35,8 +35,8 @@ public class ImageFrame extends JFrame
             File file = new File(new ImageManager().createPath(imageName));
             BufferedImage image = ImageIO.read(file);
 
-            ImageResizer resizer = new ImageResizer(new Dimension(image.getWidth(), image.getHeight()));
-            Dimension scaled = resizer.resizeToFit(this.getSize());
+            DimensionResizer resizer = new DimensionResizer(new Dimension(image.getWidth(), image.getHeight()));
+            Dimension scaled = resizer.resizeBiggerToFit(this.getSize());
 
             return new JLabel(new ImageIcon(image.getScaledInstance(scaled.width, scaled.height, Image.SCALE_DEFAULT)));
         }
