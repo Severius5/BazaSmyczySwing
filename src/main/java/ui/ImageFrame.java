@@ -1,6 +1,7 @@
 package ui;
 
 import logic.ImageManager;
+import logic.ImageResizer;
 import utils.Consts;
 
 import javax.imageio.ImageIO;
@@ -27,16 +28,13 @@ public class ImageFrame extends JFrame {
 
     private JComponent initImage() {
         try {
-            ImageManager imageManager = new ImageManager();
-            File file = new File(imageManager.createPath(imageName));
+            File file = new File(new ImageManager().createPath(imageName));
             BufferedImage image = ImageIO.read(file);
 
-            double scaleFactor = Math.min(1d, imageManager.getScaleFactorToFit(new Dimension(image.getWidth(), image.getHeight()), this.getSize()));
+            ImageResizer resizer = new ImageResizer(new Dimension(image.getWidth(), image.getHeight()));
+            Dimension scaled = resizer.resizeToFit(this.getSize());
 
-            int scaleWidth = (int) Math.round(image.getWidth() * scaleFactor);
-            int scaleHeight = (int) Math.round(image.getHeight() * scaleFactor);
-
-            return new JLabel(new ImageIcon(image.getScaledInstance(scaleWidth, scaleHeight, Image.SCALE_DEFAULT)));
+            return new JLabel(new ImageIcon(image.getScaledInstance(scaled.width, scaled.height, Image.SCALE_DEFAULT)));
         } catch (IOException e) {
             e.printStackTrace();
             FrameHelper.showWarning(null, Consts.noPhotoAvailable);

@@ -1,6 +1,5 @@
 package logic;
 
-import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -44,24 +43,6 @@ public class ImageManager
         if (!file.exists()) {
             file.mkdir();
         }
-    }
-
-    public double getScaleFactorToFit(Dimension original, Dimension toFit) {
-        double dScale = 1d;
-
-        if (original != null && toFit != null) {
-
-            double dScaleWidth = getScaleFactor(original.width, toFit.width);
-            double dScaleHeight = getScaleFactor(original.height, toFit.height);
-
-            dScale = Math.min(dScaleHeight, dScaleWidth);
-        }
-
-        return dScale;
-    }
-
-    private double getScaleFactor(int iMasterSize, int iTargetSize) {
-        return (double) iTargetSize / iMasterSize;
     }
 
     private String getMainDirectory() {
