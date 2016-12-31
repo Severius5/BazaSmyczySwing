@@ -2,9 +2,9 @@ package ui;
 
 import entity.Leash;
 import logic.DBManager;
-import logic.FileManager;
+import logic.ImageManager;
 import utils.Column;
-import utils.Params;
+import utils.Consts;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -76,18 +76,18 @@ public class EditFrame extends JFrame {
                 DBManager dbManager = new DBManager();
 
                 if (dbManager.isLeashExists(leash)) {
-                    FrameHelper.showWarning(null, Params.leashExists);
+                    FrameHelper.showWarning(null, Consts.leashExists);
                     return;
                 }
                 if (isImageNameChanged()) {
                     if (dbManager.isImageNameExists(leash)) {
-                        FrameHelper.showWarning(null, Params.leashImageExists);
+                        FrameHelper.showWarning(null, Consts.leashImageExists);
                         return;
                     }
                     try {
-                        new FileManager().renameImageFile(oldImageName, newImageName);
+                        new ImageManager().renameImageFile(oldImageName, newImageName);
                     } catch (IOException e1) {
-                        FrameHelper.showError(null, Params.cantRename);
+                        FrameHelper.showError(null, Consts.cantRename);
                         return;
                     }
                 }

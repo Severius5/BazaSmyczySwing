@@ -1,7 +1,7 @@
 package ui;
 
 import logic.DBManager;
-import logic.FileManager;
+import logic.ImageManager;
 import utils.TableModel;
 import logic.TableModelHelper;
 import utils.Column;
@@ -141,7 +141,7 @@ public class MainFrame extends JFrame {
         if (JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(this, "Delete?", "Delete", JOptionPane.YES_NO_OPTION)) {
             Long ID = (Long) tableModel.getValueAt(row, Column.ID);
             String imageName = (String) tableModel.getValueAt(row, Column.imageName);
-            new FileManager().deleteImage(imageName);
+            new ImageManager().deleteImage(imageName);
             tableModel.removeRow(row);
             dbManager.delete(ID);
         }

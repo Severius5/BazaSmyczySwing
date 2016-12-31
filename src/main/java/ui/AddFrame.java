@@ -2,8 +2,8 @@ package ui;
 
 import entity.Leash;
 import logic.DBManager;
-import logic.FileManager;
-import utils.Params;
+import logic.ImageManager;
+import utils.Consts;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -66,15 +66,15 @@ public class AddFrame extends JFrame {
             if (file != null) {
                 String imageName = frameHelper.getImageNameField().getText();
                 try {
-                    new FileManager().copyImage(file, imageName);
+                    new ImageManager().copyImage(file, imageName);
                 } catch (Exception e) {
                     e.printStackTrace();
-                    FrameHelper.showError(null, Params.cantCopy);
+                    FrameHelper.showError(null, Consts.cantCopy);
                     return false;
                 }
                 return true;
             } else {
-                FrameHelper.showWarning(null, Params.selectFile);
+                FrameHelper.showWarning(null, Consts.selectFile);
                 return false;
             }
         }

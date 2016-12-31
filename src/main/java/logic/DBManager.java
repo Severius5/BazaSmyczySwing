@@ -1,8 +1,6 @@
 package logic;
 
 import entity.Leash;
-import org.hibernate.query.Query;
-import utils.Factory;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -10,6 +8,8 @@ import org.hibernate.Transaction;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.query.Query;
+import utils.Factory;
 
 import java.util.List;
 
@@ -143,15 +143,21 @@ public class DBManager {
         return false;
     }
 
+    /**
+     * Checks if the leash with specific text, size and color exists in database.
+     * @param leash Leash to check.
+     * @return true if leash exists otherwise false.
+     */
     public boolean isLeashExists(final Leash leash) {
         Transaction transaction = null;
         try (Session session = Factory.getSessionFactory().getCurrentSession()) {
             transaction = session.beginTransaction();
 
-            final String dbQuery = "FROM Leash WHERE text=:text and "
+            final String dbQuery = "FROM Leash WHERE ID<>:ID and text=:text and "
                     +"size=:size and color=:color";
 
             Query query = session.createQuery(dbQuery);
+            query.setParameter("ID", leash.getID());
             query.setParameter("text", leash.getText());
             query.setParameter("size", leash.getSize());
             query.setParameter("color", leash.getColor());

@@ -1,6 +1,7 @@
 package utils;
 
-public class Params {
+public class Consts
+{
     public static final String leashExists = "Smycz istnieje w bazie";
     public static final String leashImageExists = "Podana nazwa obrazu juz istnieje";
     public static final String cantRename = "Nie mozna zmienic nazwy";

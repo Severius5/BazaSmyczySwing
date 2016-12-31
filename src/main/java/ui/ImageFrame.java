@@ -1,10 +1,11 @@
 package ui;
 
-import logic.FileManager;
-import utils.Params;
+import logic.ImageManager;
+import utils.Consts;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -17,7 +18,7 @@ public class ImageFrame extends JFrame {
         this.imageName = imageName;
         setTitle("Obraz smyczy");
         setLocationRelativeTo(null);
-        setDefaultCloseOperation(this.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setSize(600, 450);
 
         add(initImage());
@@ -26,12 +27,19 @@ public class ImageFrame extends JFrame {
 
     private JComponent initImage() {
         try {
-            File file = new File(new FileManager().createPath(imageName));
+            ImageManager imageManager = new ImageManager();
+            File file = new File(imageManager.createPath(imageName));
             BufferedImage image = ImageIO.read(file);
-            return new JLabel(new ImageIcon(image.getScaledInstance(600, 450, image.SCALE_DEFAULT)));
+
+            double scaleFactor = Math.min(1d, imageManager.getScaleFactorToFit(new Dimension(image.getWidth(), image.getHeight()), this.getSize()));
+
+            int scaleWidth = (int) Math.round(image.getWidth() * scaleFactor);
+            int scaleHeight = (int) Math.round(image.getHeight() * scaleFactor);
+
+            return new JLabel(new ImageIcon(image.getScaledInstance(scaleWidth, scaleHeight, Image.SCALE_DEFAULT)));
         } catch (IOException e) {
             e.printStackTrace();
-            FrameHelper.showWarning(null, Params.noPhotoAvailable);
+            FrameHelper.showWarning(null, Consts.noPhotoAvailable);
         }
         return null;
     }

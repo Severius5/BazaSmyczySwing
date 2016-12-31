@@ -2,8 +2,8 @@ package ui;
 
 import entity.Leash;
 import logic.DBManager;
-import logic.FileManager;
-import utils.Params;
+import logic.ImageManager;
+import utils.Consts;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -112,9 +112,9 @@ public class FrameHelper {
     public boolean isLeashInvalid(Leash leash) {
         if (dbManager.isImageNameExists(leash)) {
             if (dbManager.isLeashExists(leash)) {
-                showWarning(null, Params.leashExists);
+                showWarning(null, Consts.leashExists);
             } else {
-                showWarning(null, Params.leashImageExists);
+                showWarning(null, Consts.leashImageExists);
             }
             return true;
         }
@@ -262,12 +262,12 @@ public class FrameHelper {
     }
 
     private void getImageFromUser() {
-        FileManager fileManager = new FileManager();
+        ImageManager imageManager = new ImageManager();
         JFileChooser fileChooser = new JFileChooser();
         if (fileChooser.showOpenDialog(new JPanel()) == JFileChooser.APPROVE_OPTION) {
             File file = fileChooser.getSelectedFile();
             this.file = file;
-            imageNameField.setText(fileManager.getImageName(file));
+            imageNameField.setText(imageManager.getImageName(file));
         }
     }
 
