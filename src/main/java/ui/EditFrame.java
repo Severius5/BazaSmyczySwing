@@ -36,9 +36,12 @@ public class EditFrame extends JFrame
         JPanel panel = new JPanel(new GridBagLayout());
 
         frameHelper.addFields(panel);
+        frameHelper.addLoadedImgField(panel);
         setTexts();
         frameHelper.addFieldsListener();
 
+        frameHelper.addLoadBtn(panel);
+        frameHelper.getLoadBtn().addActionListener(new ButtonHandler());
         frameHelper.addOKBtn(panel, "Zapisz");
         frameHelper.getOkBtn().addActionListener(new ButtonHandler());
         frameHelper.addCancelBtn(panel);
@@ -87,7 +90,7 @@ public class EditFrame extends JFrame
                 DBManager dbManager = new DBManager();
                 ImageManager imageManager = new ImageManager();
 
-                if (dbManager.isLeashExists(leash))
+                if (dbManager.isLeashExists(leash) && file == null && !isImageNameChanged())
                 {
                     FrameHelper.showWarning(null, Consts.leashExists);
                     return;
@@ -146,6 +149,10 @@ public class EditFrame extends JFrame
             else if (source == frameHelper.getCancelBtn())
             {
                 setVisible(false);
+            }
+            else if (source == frameHelper.getLoadBtn())
+            {
+                frameHelper.getImageFromUser();
             }
         }
 

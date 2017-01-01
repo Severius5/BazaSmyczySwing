@@ -30,9 +30,9 @@ public class ImageManager
         Files.move(source.toPath(), source.toPath().resolveSibling(newName + imageExt));
     }
 
-    public String getImageName(final File imagePath)
+    public String getImageName(final File file)
     {
-        String path = imagePath.toString();
+        String path = file.toString();
         return path.substring(path.lastIndexOf(File.separator) + 1, path.indexOf("."));
     }
 

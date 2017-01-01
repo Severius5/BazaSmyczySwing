@@ -31,8 +31,11 @@ public class AddFrame extends JFrame
         JPanel panel = new JPanel(new GridBagLayout());
 
         frameHelper.addFields(panel);
+        frameHelper.addLoadedImgField(panel);
         frameHelper.addFieldsListener();
 
+        frameHelper.addLoadBtn(panel);
+        frameHelper.getLoadBtn().addActionListener(new ButtonHandler());
         frameHelper.addOKBtn(panel, "Dodaj");
         frameHelper.getOkBtn().addActionListener(new ButtonHandler());
         frameHelper.addCancelBtn(panel);
@@ -66,6 +69,10 @@ public class AddFrame extends JFrame
             else if (source == frameHelper.getCancelBtn())
             {
                 setVisible(false);
+            }
+            else if (source == frameHelper.getLoadBtn())
+            {
+                frameHelper.getImageFromUser();
             }
         }
 

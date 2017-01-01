@@ -9,8 +9,6 @@ import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,11 +19,13 @@ public class FrameHelper
     private JFrame frame;
     private JButton cancelBtn;
     private JButton okBtn;
+    private JButton loadBtn;
     private JTextField imageNameField;
     private JTextField textField;
     private JTextField sizeField;
     private JTextField colorField;
     private JTextField descField;
+    private JTextField loadedImgField;
     private File file;
     private List<JTextField> requiredFields = new ArrayList<>();
     private DBManager dbManager = new DBManager();
@@ -44,6 +44,11 @@ public class FrameHelper
     public JButton getCancelBtn()
     {
         return cancelBtn;
+    }
+
+    public JButton getLoadBtn()
+    {
+        return loadBtn;
     }
 
     public JTextField getImageNameField()
@@ -78,7 +83,7 @@ public class FrameHelper
 
     public void setSettings()
     {
-        frame.setSize(300, 200);
+        frame.setSize(300, 215);
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         frame.setVisible(true);
@@ -97,9 +102,9 @@ public class FrameHelper
     {
         GridBagConstraints constraints;
         constraints = new GridBagConstraints();
-        constraints.gridy = 5;
+        constraints.gridy = 6;
         constraints.gridx = 1;
-        constraints.anchor = GridBagConstraints.CENTER;
+        constraints.anchor = GridBagConstraints.WEST;
         cancelBtn = new JButton("Anuluj");
         panel.add(cancelBtn, constraints);
     }
@@ -108,21 +113,32 @@ public class FrameHelper
     {
         GridBagConstraints constraints;
         constraints = new GridBagConstraints();
-        constraints.gridy = 5;
-        constraints.anchor = GridBagConstraints.CENTER;
+        constraints.gridy = 6;
+        constraints.anchor = GridBagConstraints.WEST;
         okBtn = new JButton(title);
         okBtn.setEnabled(false);
         panel.add(okBtn, constraints);
+    }
+
+    public void addLoadBtn(JPanel panel)
+    {
+        GridBagConstraints constraints;
+        constraints = new GridBagConstraints();
+        constraints.gridy = 0;
+        constraints.gridx = 0;
+        constraints.anchor = GridBagConstraints.WEST;
+        loadBtn = new JButton("Load Img");
+        panel.add(loadBtn, constraints);
     }
 
     public void addFieldsListener()
     {
         textField.getDocument().addDocumentListener(new FieldListener());
         imageNameField.getDocument().addDocumentListener(new FieldListener());
-        imageNameField.addMouseListener(new MouseListener());
         sizeField.getDocument().addDocumentListener(new FieldListener());
         colorField.getDocument().addDocumentListener(new FieldListener());
         descField.getDocument().addDocumentListener(new FieldListener());
+        loadedImgField.getDocument().addDocumentListener(new FieldListener());
     }
 
     public boolean isLeashInvalid(Leash leash)
@@ -184,19 +200,33 @@ public class FrameHelper
         constraints = new GridBagConstraints();
         constraints.insets = new Insets(2, 2, 2, 2);
         constraints.anchor = GridBagConstraints.WEST;
-        constraints.gridy = 3;
+        constraints.gridy = 4;
         panel.add(new JLabel("Color:"), constraints);
 
         constraints = new GridBagConstraints();
         constraints.insets = new Insets(2, 2, 2, 2);
         constraints.fill = GridBagConstraints.BOTH;
         constraints.gridx = 1;
-        constraints.gridy = 3;
+        constraints.gridy = 4;
         constraints.weightx = 1;
         colorField = new JTextField();
 
         panel.add(colorField, constraints);
         requiredFields.add(colorField);
+    }
+
+    public void addLoadedImgField(JPanel panel)
+    {
+        GridBagConstraints constraints = new GridBagConstraints();
+        constraints.insets = new Insets(2, 2, 2, 2);
+        constraints.fill = GridBagConstraints.BOTH;
+        constraints.gridx = 1;
+        constraints.gridy = 0;
+        constraints.weightx = 1;
+        loadedImgField = new JTextField();
+        loadedImgField.setEditable(false);
+
+        panel.add(loadedImgField, constraints);
     }
 
     private void addSizeField(JPanel panel)
@@ -205,14 +235,14 @@ public class FrameHelper
         constraints = new GridBagConstraints();
         constraints.insets = new Insets(2, 2, 2, 2);
         constraints.anchor = GridBagConstraints.WEST;
-        constraints.gridy = 2;
+        constraints.gridy = 3;
         panel.add(new JLabel("Size:"), constraints);
 
         constraints = new GridBagConstraints();
         constraints.insets = new Insets(2, 2, 2, 2);
         constraints.fill = GridBagConstraints.BOTH;
         constraints.gridx = 1;
-        constraints.gridy = 2;
+        constraints.gridy = 3;
         constraints.weightx = 1;
         sizeField = new JTextField();
 
@@ -226,14 +256,14 @@ public class FrameHelper
         constraints = new GridBagConstraints();
         constraints.insets = new Insets(2, 2, 2, 2);
         constraints.anchor = GridBagConstraints.WEST;
-        constraints.gridy = 1;
+        constraints.gridy = 2;
         panel.add(new JLabel("Text:"), constraints);
 
         constraints = new GridBagConstraints();
         constraints.insets = new Insets(2, 2, 2, 2);
         constraints.fill = GridBagConstraints.BOTH;
         constraints.gridx = 1;
-        constraints.gridy = 1;
+        constraints.gridy = 2;
         constraints.weightx = 1;
         textField = new JTextField();
 
@@ -246,13 +276,14 @@ public class FrameHelper
         GridBagConstraints constraints = new GridBagConstraints();
         constraints.insets = new Insets(2, 2, 2, 2);
         constraints.anchor = GridBagConstraints.WEST;
+        constraints.gridy = 1;
         panel.add(new JLabel("Image name:"), constraints);
 
         constraints = new GridBagConstraints();
         constraints.insets = new Insets(2, 2, 2, 2);
         constraints.fill = GridBagConstraints.BOTH;
         constraints.gridx = 1;
-        constraints.gridy = 0;
+        constraints.gridy = 1;
         constraints.weightx = 1;
         imageNameField = new JTextField();
 
@@ -265,14 +296,14 @@ public class FrameHelper
         GridBagConstraints constraints = new GridBagConstraints();
         constraints.insets = new Insets(2, 2, 2, 2);
         constraints.anchor = GridBagConstraints.WEST;
-        constraints.gridy = 4;
+        constraints.gridy = 5;
         panel.add(new JLabel("Description:"), constraints);
 
         constraints = new GridBagConstraints();
         constraints.insets = new Insets(2, 2, 2, 2);
         constraints.fill = GridBagConstraints.BOTH;
         constraints.gridx = 1;
-        constraints.gridy = 4;
+        constraints.gridy = 5;
         constraints.weightx = 1;
         descField = new JTextField();
 
@@ -297,7 +328,7 @@ public class FrameHelper
         return result;
     }
 
-    private void getImageFromUser()
+    public void getImageFromUser()
     {
         ImageManager imageManager = new ImageManager();
         JFileChooser fileChooser = new JFileChooser();
@@ -305,7 +336,7 @@ public class FrameHelper
         {
             File file = fileChooser.getSelectedFile();
             this.file = file;
-            imageNameField.setText(imageManager.getImageName(file));
+            loadedImgField.setText(imageManager.getImageName(file));
         }
     }
 
@@ -326,19 +357,8 @@ public class FrameHelper
         @Override
         public void changedUpdate(DocumentEvent e)
         {
-            okBtn.setEnabled(checkForEmptyFields());
+            okBtn.setEnabled(loadedImgField.getText().trim().length() != 0);
         }
     }
 
-    private class MouseListener extends MouseAdapter
-    {
-        @Override
-        public void mousePressed(MouseEvent e)
-        {
-            if (e.getClickCount() == 2)
-            {
-                getImageFromUser();
-            }
-        }
-    }
 }
