@@ -11,6 +11,7 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.IOException;
 
 public class EditFrame extends JFrame
@@ -82,7 +83,9 @@ public class EditFrame extends JFrame
                 newImageName = frameHelper.getImageNameField().getText();
                 final Leash leash = frameHelper.newLeashWithFields(ID);
                 final Object[] newRow = frameHelper.newObjectWithFields(ID, leash);
+                final File file = frameHelper.getFile();
                 DBManager dbManager = new DBManager();
+                ImageManager imageManager = new ImageManager();
 
                 if (dbManager.isLeashExists(leash))
                 {
@@ -96,13 +99,41 @@ public class EditFrame extends JFrame
                         FrameHelper.showWarning(null, Consts.leashImageExists);
                         return;
                     }
+
+                    if (file != null)
+                    {
+                        try
+                        {
+                            changeImage(imageManager, file);
+                        }
+                        catch (IOException e1)
+                        {
+                            FrameHelper.showError(null, Consts.cantCopy);
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        try
+                        {
+                            imageManager.renameImageFile(oldImageName, newImageName);
+                        }
+                        catch (IOException e1)
+                        {
+                            FrameHelper.showError(null, Consts.cantRename);
+                            return;
+                        }
+                    }
+                }
+                else if (file != null)
+                {
                     try
                     {
-                        new ImageManager().renameImageFile(oldImageName, newImageName);
+                        changeImage(imageManager, file);
                     }
                     catch (IOException e1)
                     {
-                        FrameHelper.showError(null, Consts.cantRename);
+                        FrameHelper.showError(null, Consts.cantCopy);
                         return;
                     }
                 }
@@ -121,6 +152,12 @@ public class EditFrame extends JFrame
         private boolean isImageNameChanged()
         {
             return !oldImageName.equals(newImageName);
+        }
+
+        private void changeImage(ImageManager imageManager, File image) throws IOException
+        {
+            imageManager.deleteImage(oldImageName);
+            imageManager.copyImage(image, newImageName);
         }
     }
 }
