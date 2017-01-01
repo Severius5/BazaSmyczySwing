@@ -27,7 +27,7 @@ public class FrameHelper
     private JTextField colorField;
     private JTextField descField;
     private File file;
-    private List<JTextField> fieldsList = new ArrayList<>();
+    private List<JTextField> requiredFields = new ArrayList<>();
     private DBManager dbManager = new DBManager();
 
 
@@ -122,6 +122,7 @@ public class FrameHelper
         imageNameField.addMouseListener(new MouseListener());
         sizeField.getDocument().addDocumentListener(new FieldListener());
         colorField.getDocument().addDocumentListener(new FieldListener());
+        descField.getDocument().addDocumentListener(new FieldListener());
     }
 
     public boolean isLeashInvalid(Leash leash)
@@ -195,7 +196,7 @@ public class FrameHelper
         colorField = new JTextField();
 
         panel.add(colorField, constraints);
-        fieldsList.add(colorField);
+        requiredFields.add(colorField);
     }
 
     private void addSizeField(JPanel panel)
@@ -216,7 +217,7 @@ public class FrameHelper
         sizeField = new JTextField();
 
         panel.add(sizeField, constraints);
-        fieldsList.add(sizeField);
+        requiredFields.add(sizeField);
     }
 
     private void addTextField(JPanel panel)
@@ -237,7 +238,7 @@ public class FrameHelper
         textField = new JTextField();
 
         panel.add(textField, constraints);
-        fieldsList.add(textField);
+        requiredFields.add(textField);
     }
 
     private void addImageNameField(JPanel panel)
@@ -256,7 +257,7 @@ public class FrameHelper
         imageNameField = new JTextField();
 
         panel.add(imageNameField, constraints);
-        fieldsList.add(imageNameField);
+        requiredFields.add(imageNameField);
     }
 
     private void addDescField(JPanel panel)
@@ -281,7 +282,7 @@ public class FrameHelper
     private boolean checkForEmptyFields()
     {
         boolean result = true;
-        for (JTextField field : fieldsList)
+        for (JTextField field : requiredFields)
         {
             if (field.getText().trim().length() == 0)
             {
@@ -331,7 +332,6 @@ public class FrameHelper
 
     private class MouseListener extends MouseAdapter
     {
-
         @Override
         public void mousePressed(MouseEvent e)
         {
