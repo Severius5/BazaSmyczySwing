@@ -121,6 +121,7 @@ public class MainFrame extends JFrame
         tableModel.setColumnIdentifiers(columnNames);
         table = new JTable(tableModel);
         table = setColumnsWidth(table);
+        table.getTableHeader().setReorderingAllowed(false);
         return new JScrollPane(table);
     }
 
