@@ -80,7 +80,7 @@ public class FrameHelper
     {
         frame.setSize(300, 200);
         frame.setLocationRelativeTo(null);
-        frame.setDefaultCloseOperation(frame.DISPOSE_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         frame.setVisible(true);
     }
 

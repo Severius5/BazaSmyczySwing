@@ -32,7 +32,7 @@ public class MainFrame extends JFrame
         setTitle("Baza smyczy");
         setSize(900, 600);
         setLocationRelativeTo(null);
-        setDefaultCloseOperation(MainFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setVisible(true);
 
         initActions();
@@ -104,7 +104,7 @@ public class MainFrame extends JFrame
             {
                 if (e.getClickCount() == 2)
                 {
-                    if (table.getSelectedColumn() == 1)
+                    if (table.getSelectedColumn() == Column.imageName)
                     {
                         int row = table.getSelectedRow();
                         String imageName = (String) tableModel.getValueAt(row, Column.imageName);

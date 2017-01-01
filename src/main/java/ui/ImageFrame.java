@@ -13,7 +13,6 @@ import java.io.IOException;
 
 public class ImageFrame extends JFrame
 {
-
     private String imageName;
 
     public ImageFrame(final String imageName)
@@ -21,7 +20,7 @@ public class ImageFrame extends JFrame
         this.imageName = imageName;
         setTitle("Obraz smyczy");
         setLocationRelativeTo(null);
-        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setSize(600, 450);
 
         add(initImage());

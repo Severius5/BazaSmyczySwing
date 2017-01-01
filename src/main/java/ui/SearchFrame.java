@@ -52,15 +52,10 @@ public class SearchFrame extends JFrame
                 Leash leash = frameHelper.newLeashWithFields();
 
                 new TableModelHelper(tableModel).updateTable(dbManager.search(leash));
+            }
 
-                setVisible(false);
-            }
-            else if (source == frameHelper.getCancelBtn())
-            {
-                setVisible(false);
-            }
+            setVisible(false);
         }
-
-
     }
+
 }

@@ -42,7 +42,7 @@ public class DimensionResizer
     /**
      * Resizes original dimension to fit in smaller dimension than original
      * @param toFit dimension to fit
-     * @return resized dimension if toFit is smaller or original dimension
+     * @return resized dimension if toFit is smaller otherwise original dimension
      */
     public Dimension resizeBiggerToFit(Dimension toFit)
     {
